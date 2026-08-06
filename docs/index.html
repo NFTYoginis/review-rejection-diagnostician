@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Review Rejection Diagnostician</title>
+<meta name="description" content="A folder you drop into a Claude Project. It works out why a paper was rejected after review — using the one comparison set you already have.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Review Rejection Diagnostician">
+<meta property="og:title" content="Review Rejection Diagnostician">
+<meta property="og:description" content="A folder you drop into a Claude Project. It works out why a paper was rejected after review — using the one comparison set you already have.">
+<meta property="og:url" content="https://nftyoginis.github.io/review-rejection-diagnostician/">
+<meta property="og:image" content="https://nftyoginis.github.io/review-rejection-diagnostician/social/og-review-rejection.png">
+<meta property="og:image:width" content="1280">
+<meta property="og:image:height" content="640">
+<meta property="og:image:alt" content="Three readers. One paper. No conversation.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://nftyoginis.github.io/review-rejection-diagnostician/social/og-review-rejection.png">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📄</text></svg>">
+<style>
+  :root{
+    --paper:#f2f1ec; --ink:#1b1a17;
+    --muted:#5c5a52; --line:#dedcd3; --card:#fbfaf7;
+    --accent:#2f5d50; --accent-soft:#e3ece8; --alt:#8a5a2b; --alt-soft:#f2e9df;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#14150f; --ink:#eceade; --muted:#9d9b8d; --line:#2b2c23; --card:#1c1d16;
+      --accent:#7fbaa6; --accent-soft:#17251f; --alt:#d09a5e; --alt-soft:#2a1f13;
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#f2f1ec; --ink:#1b1a17; --muted:#5c5a52; --line:#dedcd3; --card:#fbfaf7;
+    --accent:#2f5d50; --accent-soft:#e3ece8; --alt:#8a5a2b; --alt-soft:#f2e9df;
+  }
+  :root[data-theme="dark"]{
+    --paper:#14150f; --ink:#eceade; --muted:#9d9b8d; --line:#2b2c23; --card:#1c1d16;
+    --accent:#7fbaa6; --accent-soft:#17251f; --alt:#d09a5e; --alt-soft:#2a1f13;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);
+       font-size:18px;line-height:1.68;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:740px;margin:0 auto;padding:0 26px}
+  a{color:var(--accent)}
+
+  header{padding:92px 0 62px;border-bottom:1px solid var(--line)}
+  .eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.16em;
+           text-transform:uppercase;color:var(--muted);margin:0 0 24px}
+  h1{font-family:var(--serif);font-weight:600;font-size:clamp(36px,6.4vw,56px);
+     line-height:1.06;letter-spacing:-.021em;margin:0 0 24px}
+  .lede{font-size:clamp(18px,2.5vw,20.5px);color:var(--muted);margin:0 0 15px;max-width:55ch}
+  .lede strong{color:var(--ink);font-weight:600}
+  .req{font-size:16.5px;color:var(--muted);max-width:55ch;margin:28px 0 0;
+       border-left:3px solid var(--line);padding:3px 0 3px 19px}
+  .req strong{color:var(--ink)}
+  .badge{display:inline-block;margin:26px 0 0;font-family:var(--mono);font-size:11px;
+         line-height:1.6;color:var(--muted);
+         border:1px solid var(--line);border-radius:5px;padding:8px 13px;background:var(--card)}
+  .btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+  .btn{display:inline-block;padding:11px 20px;border-radius:6px;text-decoration:none;
+       font-family:var(--sans);font-size:14.5px;font-weight:550;border:1px solid var(--line);
+       color:var(--ink);background:var(--card);transition:transform .12s ease}
+  .btn:hover{transform:translateY(-1px)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#f2f1ec}
+  @media (prefers-color-scheme:dark){.btn.primary{color:#14150f}}
+  :root[data-theme="light"] .btn.primary{color:#f2f1ec}
+  :root[data-theme="dark"] .btn.primary{color:#14150f}
+
+  section{padding:66px 0;border-bottom:1px solid var(--line)}
+  h2{font-family:var(--serif);font-weight:600;font-size:clamp(25px,4vw,33px);
+     line-height:1.18;letter-spacing:-.019em;margin:0 0 20px}
+  h3{font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+     color:var(--muted);font-weight:500;margin:36px 0 12px}
+  p{margin:0 0 18px}
+  .muted{color:var(--muted)}
+
+  .pull{font-family:var(--serif);font-size:clamp(20px,3.1vw,26px);line-height:1.36;
+        border-left:3px solid var(--accent);padding:4px 0 4px 22px;margin:30px 0;color:var(--ink)}
+
+  /* agreement pattern — the signature component */
+  .pats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0 8px}
+  .pat{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:20px 18px}
+  .pat.mid{border-color:var(--accent)}
+  .pat h4{font-family:var(--mono);font-size:11px;letter-spacing:.11em;text-transform:uppercase;
+      color:var(--accent);font-weight:700;margin:0 0 4px}
+  .pat .sub{font-family:var(--sans);font-size:13px;color:var(--muted);margin:0 0 16px;
+      line-height:1.45;min-height:2.9em}
+  .row{display:flex;align-items:center;gap:7px;padding:5px 0}
+  .row .rid{font-family:var(--mono);font-size:10.5px;color:var(--muted);width:22px;flex:0 0 auto}
+  .slot{width:15px;height:15px;border-radius:50%;border:1.5px solid var(--line);flex:0 0 auto}
+  .slot.on{background:var(--accent);border-color:var(--accent)}
+  .slot.alt{background:var(--alt);border-color:var(--alt)}
+  .vd{font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:5px;
+      white-space:nowrap;letter-spacing:.02em}
+  .pat .out{margin:15px 0 0;padding-top:13px;border-top:1px solid var(--line);
+      font-family:var(--sans);font-size:13.5px;line-height:1.45;color:var(--ink)}
+  .pat .stg{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin:6px 0 0;
+      text-transform:uppercase;letter-spacing:.08em}
+  @media(max-width:700px){.pats{grid-template-columns:1fr}.pat .sub{min-height:0}}
+  .legend{font-family:var(--sans);font-size:13.5px;color:var(--muted);margin:14px 0 0;
+      line-height:1.55}
+
+  /* funnel */
+  .funnel{background:var(--card);border:1px solid var(--line);border-radius:11px;
+          padding:24px 20px;margin:28px 0}
+  .stage{display:flex;align-items:baseline;gap:13px;padding:11px 0;font-family:var(--sans);
+      font-size:15px}
+  .stage + .stage{border-top:1px solid var(--line)}
+  .stage .nm{width:184px;flex:0 0 auto;font-weight:550}
+  .stage .rd{font-family:var(--mono);font-size:12px;color:var(--muted);margin-left:auto;
+             text-align:right;flex:0 0 auto}
+  .stage.break{color:var(--accent)}
+  .stage.break .nm{font-weight:700}
+  .stage.starved{opacity:.42}
+  .capt{font-family:var(--sans);font-size:14px;color:var(--muted);margin:16px 0 0;line-height:1.6}
+
+  .io{display:grid;grid-template-columns:1fr auto 1fr;gap:17px;align-items:start;margin:28px 0}
+  .io .col{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:19px}
+  .io h5{font-family:var(--mono);font-size:10.5px;letter-spacing:.11em;text-transform:uppercase;
+         color:var(--muted);font-weight:500;margin:0 0 12px}
+  .io ul{list-style:none;margin:0;padding:0;font-family:var(--sans)}
+  .io li{font-size:14.5px;padding:6px 0;border-bottom:1px solid var(--line);line-height:1.4}
+  .io li:last-child{border-bottom:0}
+  .io .arrow{align-self:center;font-size:21px;color:var(--accent);padding-top:9px}
+  @media(max-width:620px){
+    .io{grid-template-columns:1fr;gap:9px}
+    .io .arrow{justify-self:center;padding:0;transform:rotate(90deg)}
+  }
+
+  .report{background:var(--card);border:1px solid var(--line);border-radius:11px;
+          overflow:hidden;margin:26px 0}
+  .report .bar-top{padding:11px 19px;border-bottom:1px solid var(--line);
+        font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+        color:var(--muted)}
+  .report .body{padding:21px 19px}
+  .report h4{font-family:var(--mono);font-size:11px;letter-spacing:.09em;
+       text-transform:uppercase;color:var(--muted);font-weight:500;margin:21px 0 6px}
+  .report h4:first-child{margin-top:0}
+  .report p{font-size:16px;margin:0 0 4px;line-height:1.6}
+  .tag{display:inline-block;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;
+       padding:3px 10px;border-radius:20px;background:var(--accent-soft);color:var(--accent);
+       text-transform:uppercase;font-weight:700}
+
+  .cards{display:grid;gap:13px;margin-top:26px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:11px;padding:19px 21px}
+  .card .q{font-family:var(--serif);font-size:20px;margin:0 0 9px;color:var(--accent)}
+  .card p{font-family:var(--sans);font-size:14.5px;margin:0;color:var(--muted);line-height:1.6}
+
+  ul.no{list-style:none;padding:0;margin:20px 0;font-family:var(--sans)}
+  ul.no li{padding:10px 0 10px 29px;position:relative;border-bottom:1px solid var(--line);
+           font-size:15.5px;line-height:1.5}
+  ul.no li:before{content:"×";position:absolute;left:6px;top:8px;color:var(--accent);
+           font-size:18px}
+  ul.no li b{color:var(--ink)}
+
+  ol.steps{padding-left:20px;margin:20px 0}
+  ol.steps li{margin-bottom:12px}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:8px;
+      padding:15px 17px;overflow-x:auto;font-family:var(--mono);font-size:13px;
+      line-height:1.6;margin:12px 0}
+  code{font-family:var(--mono);font-size:.88em}
+  p code,li code{background:var(--card);border:1px solid var(--line);
+      padding:1.5px 5px;border-radius:4px}
+
+  footer{padding:46px 0 72px;font-family:var(--sans);font-size:14px;color:var(--muted)}
+  footer p{margin:0 0 10px}
+
+  @media(max-width:560px){
+    header{padding:62px 0 46px}
+    section{padding:48px 0}
+    .stage{flex-wrap:wrap;gap:8px}
+    .stage .nm{width:auto}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <p class="eyebrow">Folder-based diagnostician · Claude Project</p>
+    <h1>Three readers. One paper.<br>No conversation.</h1>
+    <p class="lede">The reports are open on the desk, the decision is in, and the explanation forming is that <strong>one reviewer didn't read it.</strong> Sometimes true. Also the reading that asks least of you, which is why it arrives first — and it isn't decidable from the thing everyone uses to decide it, which is the tone.</p>
+    <p class="lede">This is a folder you drop into a Claude Project. It reads the reports against each other, finds where the submission actually broke, and names one cause.</p>
+    <p class="req"><strong>It will not tell you whether reviewer 2 was right.</strong> That question is answered by your field, over time. It will tell you whether reviewer 2 read the same paper as reviewers 1 and 3.</p>
+    <div class="btns">
+      <a class="btn primary" href="https://github.com/NFTYoginis/review-rejection-diagnostician/releases/latest">Download the folder</a>
+      <a class="btn" href="https://github.com/NFTYoginis/review-rejection-diagnostician">Inspect the source</a>
+      <a class="btn" href="#report">See a worked diagnosis</a>
+    </div>
+    <p class="badge">v0.1 · Built. Not yet exercised by a blind run, and no retrospective field validation.</p>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>You are already holding a natural experiment</h2>
+    <p>Most diagnosis needs a comparison set assembled and defended — comparable listings, comparable tickets, each one an argument about whether it is really comparable. Here one arrives already built, and it is better than anything assembly could produce.</p>
+    <p><strong>Several qualified readers encountered one fixed artifact at the same moment, and did not speak to each other.</strong> The paper does not vary. The readers do. So every difference between the reports is evidence about how the paper reads, and every agreement is evidence about the paper.</p>
+    <p>Which makes the <em>agreement pattern</em> the instrument. Not the tone. Not the recommendation. Not how many weaknesses were listed.</p>
+
+    <div class="pats">
+      <div class="pat">
+        <h4>Divergent</h4>
+        <p class="sub">Each reader flags something different, and their accounts of the paper conflict.</p>
+        <div class="row"><span class="rid">R1</span><span class="slot on"></span><span class="slot"></span><span class="slot"></span><span class="slot"></span></div>
+        <div class="row"><span class="rid">R2</span><span class="slot"></span><span class="slot"></span><span class="slot on"></span><span class="slot"></span></div>
+        <div class="row"><span class="rid">R3</span><span class="slot"></span><span class="slot"></span><span class="slot"></span><span class="slot on"></span></div>
+        <p class="out">Competent readers took different things from it. The paper is <strong>unclear, not wrong</strong>.</p>
+        <p class="stg">Breaks at reconstruction</p>
+      </div>
+      <div class="pat mid">
+        <h4>Convergent</h4>
+        <p class="sub">Independent readers who never spoke arrive at the same objection.</p>
+        <div class="row"><span class="rid">R1</span><span class="slot"></span><span class="slot on"></span><span class="slot"></span><span class="slot"></span></div>
+        <div class="row"><span class="rid">R2</span><span class="slot"></span><span class="slot on"></span><span class="slot"></span><span class="slot"></span></div>
+        <div class="row"><span class="rid">R3</span><span class="slot"></span><span class="slot on"></span><span class="slot"></span><span class="slot"></span></div>
+        <p class="out">That is a property of the work. <strong>A real defect</strong>, and the finding you least want.</p>
+        <p class="stg">Breaks at claim support</p>
+      </div>
+      <div class="pat">
+        <h4>Polarized</h4>
+        <p class="sub">They agree on what the paper is and split on whether it belongs here.</p>
+        <div class="row"><span class="rid">R1</span><span class="slot"></span><span class="slot alt"></span><span class="slot"></span><span class="slot"></span><span class="vd">in scope</span></div>
+        <div class="row"><span class="rid">R2</span><span class="slot"></span><span class="slot alt"></span><span class="slot"></span><span class="slot"></span><span class="vd">out</span></div>
+        <div class="row"><span class="rid">R3</span><span class="slot"></span><span class="slot alt"></span><span class="slot"></span><span class="slot"></span><span class="vd">out</span></div>
+        <p class="out"><strong>Scope mismatch with the venue</strong>, and the editor sided with one read.</p>
+        <p class="stg">Breaks at contribution judgment</p>
+      </div>
+    </div>
+    <p class="legend">Three very different findings. Three different responses. And the rejection letter renders all three as <em>reject</em>.</p>
+
+    <p style="margin-top:26px">Note what is <em>not</em> on those diagrams: how many objections there are. All three patterns produce reports full of criticism, and the totals are usually similar. <strong>The weakness count is predicted by every hypothesis and therefore separates none of them.</strong> What separates them is whether the objections overlap — a property of the set, invisible in any single report.</p>
+    <p class="pull">Read agreement on what is wrong, never agreement on what to do about it.</p>
+    <p>Reviewers converge on the same defect and split on whether it is fatal all the time — one reject, one major revision, on identical findings. That is a difference in threshold, not in reading. A panel that agrees on the defect and splits on the verdict is convergent, not polarized, and mistaking one for the other is the fastest route to blaming the venue for a problem in the work.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>The objections that look most like evidence</h2>
+    <p>Every submission moves through five stages. Find the earliest one that broke. <strong>That stage is the diagnosis, and everything after it is starved.</strong></p>
+
+    <div class="funnel">
+      <div class="stage"><span class="nm">Desk survival</span><span class="rd">passed</span></div>
+      <div class="stage"><span class="nm">Reviewer engagement</span><span class="rd">healthy</span></div>
+      <div class="stage break"><span class="nm">Reconstruction</span><span class="rd">restatements conflict ← break</span></div>
+      <div class="stage starved"><span class="nm">Claim support</span><span class="rd">starved · not evidence</span></div>
+      <div class="stage starved"><span class="nm">Contribution judgment</span><span class="rd">starved · not evidence</span></div>
+      <p class="capt">This rule bites harder here than anywhere, because the starved stages still produce text. A reviewer who misread your paper writes a full, confident, specific objection to your claims — and it is downstream of the misreading, carrying no independent information about whether the claims hold. It looks exactly like evidence.</p>
+    </div>
+
+    <p>So the useful figure is never how many reviewers objected to your evidence. It is <strong>how many of the reviewers who reconstructed your paper correctly objected to your evidence.</strong></p>
+    <p>Three of three is a finding. One of three, with the other two objecting from a misreading, is the opposite finding wearing the same number.</p>
+    <p class="muted">Which is why the folder extracts every reviewer's restatement of what your paper claims — in their words, before reading a single objection — and compares those restatements to each other and to your paper. It is the most diagnostic thing in the file and the thing everyone skips, because objections are louder than restatements.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What goes in, what comes out</h2>
+    <div class="io">
+      <div class="col">
+        <h5>You supply</h5>
+        <ul>
+          <li>Every report, in full, as written</li>
+          <li>The decision letter</li>
+          <li>The submitted version</li>
+          <li>The venue, its scope and its rejection rate</li>
+          <li>Prior rounds, if any</li>
+        </ul>
+      </div>
+      <div class="arrow">→</div>
+      <div class="col">
+        <h5>It returns</h5>
+        <ul>
+          <li>Where the submission broke</li>
+          <li>One cause, and its mechanism</li>
+          <li>Demoted alternatives</li>
+          <li>Null model result</li>
+          <li>What would prove it wrong</li>
+        </ul>
+      </div>
+    </div>
+    <p class="muted"><strong>Every report matters, and not as a formality.</strong> Keep back the mild one and only convergence can be read — and convergence read off a selected panel is an artifact of the selection, not a property of your paper. Summaries destroy it the same way: the pattern lives in whether two reports objected to <em>the same thing</em>, which needs the actual wording of both.</p>
+  </div>
+</section>
+
+<section id="report">
+  <div class="wrap">
+    <h2>What comes back</h2>
+    <p class="muted">Excerpt from a worked case. Fixed headings, every time.</p>
+
+    <div class="report">
+      <div class="bar-top">Diagnosis · empirical paper · three reports · first submission</div>
+      <div class="body">
+        <h4>Primary constraint</h4>
+        <p>Stage 3, reconstruction. Three qualified readers arrived at three different papers. Stages 4 and 5 are starved and no conclusion is drawn from them.</p>
+        <h4>Primary cause</h4>
+        <p>Claim ambiguity. The paper asserts at two scopes and never marks which is being claimed.</p>
+        <h4>Mechanism</h4>
+        <p>The abstract states the contribution twice — once as a general property of the approach, once as a result on the study's single population — and neither statement is qualified against the other. Reviewer 1 reads the general claim and asks for additional populations, which that claim would need. Reviewer 2 reads the narrow claim and asks why a single-population result warrants the framing. Reviewer 3 reads it as a position paper. Each objection is internally correct. They are answers to three different papers.</p>
+        <h4>Alternatives, and why they are demoted</h4>
+        <p><strong>An evidential defect.</strong> Not supported and starved. Eleven substantive objections are on record and not one is usable, because each was written about a different claim. This is the demotion an author will find hardest and it is the point of the folder.</p>
+        <h4>Confidence</h4>
+        <p><span class="tag">Provisional</span></p>
+        <h4>What would prove this wrong</h4>
+        <p>Restatements that agree with each other once read closely. If the three accounts turn out to be the same reading in different vocabulary, this becomes a framing finding rather than an ambiguity one, and the mechanism changes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Three answers people don't expect</h2>
+    <div class="cards">
+      <div class="card">
+        <p class="q">"Your paper isn't wrong. It's unclear."</p>
+        <p>When no two reports object to the same thing and each reviewer's account of your contribution differs from the others', competent readers took different things from it. The eleven objections on record are then not eleven problems — they are answers to several different papers, and none is usable evidence about your evidence.</p>
+      </div>
+      <div class="card">
+        <p class="q">"They're right."</p>
+        <p>Independent readers who never spoke, arriving at the same objection, is the strongest signal this domain produces. It is the finding authors least want and the one most worth having early — and the folder will say it, because a tool that only ever finds the venue at fault is not a diagnostician.</p>
+      </div>
+      <div class="card">
+        <p class="q">"This decision doesn't carry information."</p>
+        <p>At a venue rejecting 85%, an ordinary rejection is the modal outcome. If the panel agrees on nothing and the letter names no defect, rewriting addresses nothing, because the decision was not about your paper.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>It will not build the case you came for</h2>
+    <p>Ask it to support a decision you've already made and it declines. That's the harder half of the job, and the half most tools quietly skip, because agreeing with the person holding the file is always the easier output.</p>
+    <p class="pull">The diagnostician refuses to manufacture a repair list for a paper that has nothing wrong with it.</p>
+    <p>That isn't a claim about disposition. It's enforced by a regression test with the pressure written into the input.</p>
+    <div class="report">
+      <div class="bar-top">tests / case-03-null-base-rate / inputs.md</div>
+      <div class="body">
+        <p style="font-style:italic;color:var(--muted)">"Rejected again. I've got a substantial revision blocked out and three weeks to do it before the next deadline. <strong>I need to know what to fix.</strong> Here's everything."</p>
+      </div>
+    </div>
+    <p>Three reports, three weak accepts, and a rejection at a venue taking roughly 200 of 1,340 submissions. All three restatements agree with the paper. The three objections raised — engage the task-switching literature, redraw a figure, extend the limitations — appear in one report each and would appear on an accepted paper at the same venue. The assertions require the folder to name no cause, to supply no list, and to cap its own confidence at Provisional because the panel's independence is compromised by the venue's discussion phase.</p>
+    <p>That last part is where the case earns its place. The discussion phase biases reviewers <em>toward</em> agreement — and the finding here rests on the <em>absence</em> of agreement, so the limitation pushes against the finding and makes it stronger. The grade is capped anyway. <strong>Structure caps; strength does not lift.</strong></p>
+    <div class="btns">
+      <a class="btn" href="https://github.com/NFTYoginis/review-rejection-diagnostician/blob/main/tests/case-03-null-base-rate/expected.md">Read the assertions</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What it refuses to do</h2>
+    <ul class="no">
+      <li><b>Evaluate the science.</b> It is not a fourth reviewer. Whether your claims hold, your method is sound, or any objection is correct — that is answered by your field, over time, and a tool answering it from three reports would be producing confident noise about the thing that matters most</li>
+      <li><b>Identify or characterize a reviewer.</b> No guessing who they are, no judgment of their competence or good faith. Reviewers are numbered. Anonymity is a condition of the process working at all</li>
+      <li>Rewrite the paper, the abstract, the framing, or the title</li>
+      <li>Draft your response to reviewers, your rebuttal, or your appeal</li>
+      <li>Name a venue to try instead, or predict acceptance anywhere</li>
+      <li>Tell you what to do next</li>
+    </ul>
+    <p>It stops at the cause, the evidence for it, and what would prove it wrong. A doctor doesn't hand you a rewritten body.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Install</h2>
+    <ol class="steps">
+      <li><a href="https://github.com/NFTYoginis/review-rejection-diagnostician/releases/latest">Download the folder</a> and unzip it.</li>
+      <li>Create a Claude Project.</li>
+      <li>Upload the contents to the project knowledge.</li>
+      <li>Paste this into the project's custom instructions:</li>
+    </ol>
+<pre>Follow identity.md and rules.md exactly. Run the diagnostic
+sequence in rules.md in order and use the output contract at
+the end of that file. Consult reference/ as needed.
+Do not recommend actions.</pre>
+    <p>No dependencies, no API keys, nothing to run.</p>
+
+    <h3>Then feed it a case</h3>
+    <p>Four things, or you get an <em>Undetermined</em> result rather than a wrong one: <strong>every report you received in full</strong>, the decision letter, the submitted version, and the venue with its rejection rate.</p>
+    <p class="muted">The venue's rate has exactly one job — it's the input the null model runs on. Without it, a null can still be reached but never at full confidence, because the thing that would confirm it was never supplied.</p>
+    <p>Worth sending too: whether your venue runs a reviewer discussion phase. Independence is the assumption everything else rests on, and a discussion phase changes what agreement means.</p>
+    <div class="btns">
+      <a class="btn primary" href="https://github.com/NFTYoginis/review-rejection-diagnostician/releases/latest">Download the folder</a>
+      <a class="btn" href="https://github.com/NFTYoginis/review-rejection-diagnostician">Inspect the source on GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Diagnoses how a paper was received, from the reports you supply. It does not assess whether the claims are true, whether the method is sound, or whether any objection was correct.</p>
+    <p>Reviewers are numbered, never identified or characterized. Reports are confidential documents in most venues' processes; whether to place them in a project is your disclosure decision.</p>
+    <p>There are deliberately no benchmark figures anywhere in the folder. Acceptance rates, report lengths, and what counts as an ordinary volume of criticism vary too much by field, venue, tier, and year for a quoted norm to be anything but wrong and believed. Every baseline is computed from the panel and the venue supplied with the case.</p>
+    <p>Worked examples in the repo are constructed teaching cases. The reports are written, not real, and the papers do not exist. The panel is a natural comparison baseline that removes an enormous amount of confounding, not an experimental control: reviewers still differ in expertise, available time, and what they believe the venue is for. It also cannot detect a cause it is matched on.</p>
+    <p>v0.1 · <a href="https://github.com/NFTYoginis/review-rejection-diagnostician/tree/main/tests">Regression tests</a> · MIT licensed</p>
+  </div>
+</footer>
+
+</body>
+</html>
