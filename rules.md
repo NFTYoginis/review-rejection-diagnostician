@@ -416,6 +416,15 @@ These caps are not advisory. **An untestable null caps confidence at Provisional
 clean everything else is**, because the most likely alternative explanation was never
 examined. Same for a limited panel.
 
+### Which rung grades 5D
+
+5D is a located constraint with a named cause, so the three grades above appear to govern it.
+Use the null rung instead. `reference/failure-modes.md` calls 5D "the null wearing a Stage 5
+costume," and that is a statement about its *evidence*: a 5D finding is confirmed the same way a
+null is, by testing against the venue's published rate and the letter's own arithmetic rather
+than against a defect in the paper. Grade a finding on the evidence that establishes it, not on
+whether a stage number happens to be attached.
+
 ### Grading a null
 
 The three grades above describe a **located constraint**. A null has none, so read literally
