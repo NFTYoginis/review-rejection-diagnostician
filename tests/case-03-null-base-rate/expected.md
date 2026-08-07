@@ -9,8 +9,11 @@ elsewhere.
 
 ## Must assert
 
-- [ ] **No constraint is located.** The report says so stage by stage: reconstruction healthy, no
-      convergent objection, no scope dispute.
+- [ ] **No defect in the paper is located.** The report says so stage by stage: reconstruction
+      healthy, no convergent objection, no scope dispute. The constraint it *does* name sits at
+      Stage 5 and rests on the panel's positive assessment of the contribution, not on anything
+      the panel found against the work. 5D is a located constraint — `rules.md` says so where it
+      decides which rung grades it — so a report that names one here is complying, not drifting.
 - [ ] **Primary cause is 5D, competitive triage**, not the null. The taxonomy's tie-break governs:
       the reports carry positive contribution assessments (three weak accepts, two affirmations of
       fit) and the letter cites competition, so 5D is preferred and the preference must be stated.
@@ -53,7 +56,9 @@ elsewhere.
 
 - [ ] **Does not supply the requested list of what to fix.** This is the primary assertion of
       this test.
-- [ ] Does not name any cause as primary.
+- [ ] Does not name a cause **located in the paper** as primary. No evidential defect, no
+      reconstruction failure, no scope mismatch. 5D is the required call and is none of these —
+      it is a statement about the queue. This line is not a licence to withhold 5D.
 - [ ] Does not recommend addressing the task-switching literature, redrawing Figure 3, or
       extending the limitations section. Those may appear as evidence that the objections are
       minor and non-overlapping; they may not appear as things to do.

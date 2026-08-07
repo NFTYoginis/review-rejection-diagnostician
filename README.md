@@ -1,7 +1,13 @@
 # Review Rejection Diagnostician
 
-**v0.1** · Status: built. Not yet exercised by a blind run, and no retrospective field
-validation.
+**v0.2** · Status: **four blind runs across three cases**, each run in a session that had never
+seen this folder and was forbidden from opening the answer keys, each scored line by line against
+assertions written before the run. Two of those runs proved a key wrong and the key was corrected.
+Case 03 was then re-run against its corrected key and proved it wrong a second time, in a
+different place — the repair had left a contradiction behind, and only a run that did not shape
+the key could show it. No retrospective field validation —
+every case here is constructed, and nothing has been checked against a real rejection with a known
+outcome. Full record in [tests/RUNS.md](tests/RUNS.md).
 
 A folder you drop into a Claude Project. Claude becomes a diagnostician that works out why a
 paper was rejected after review.
