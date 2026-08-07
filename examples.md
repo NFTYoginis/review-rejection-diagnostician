@@ -358,12 +358,12 @@ No stage reads below par.
 
 ### Primary constraint
 
-**None located.** The panel reconstructs the paper correctly, raises nothing it agrees on, and
+**Stage 5, contribution judgment.** The panel reconstructs the paper correctly, raises nothing it agrees on, and
 does not dispute the paper's fit.
 
 ### Primary cause
 
-**No paper-specific cause is demonstrated.**
+**5D, competitive triage.** The paper cleared the panel's bar and lost a queue.
 
 ### Mechanism
 
@@ -415,7 +415,7 @@ preference rests on.
 
 ### Null model
 
-**Accepted. This is the diagnosis.** The venue's published rate makes rejection ordinary, the
+**Named, live, and not chosen.** Its signature is met on every clause but one: the reports are affirmatively positive about the contribution rather than silent on it, and the taxonomy's tie-break prefers 5D on exactly that. The null stays live because a discussion phase biases a panel toward the uniformity the preference rests on. The venue's published rate makes rejection ordinary, the
 panel raises nothing it agrees on, reconstruction is clean, and fit is not disputed.
 
 ### Confidence

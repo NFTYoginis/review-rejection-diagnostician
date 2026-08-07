@@ -87,8 +87,21 @@ Compare against two things:
 Read it as:
 
 - Ordinary outcome at a high-rejection venue, no convergent substantive objection, decision
-  letter citing competition → **no failure demonstrated.** Go to Step 5, write the null,
-  stop.
+  letter citing competition → **no paper-specific failure is demonstrated.** The null is your
+  likely finding. **Do not stop here.** Run Steps 2 through 6 anyway: the output contract
+  requires a funnel reconstruction and a demoted-alternatives section, and neither can be
+  written from this screen alone.
+
+  **One exception decides where you land, and it is why this screen does not terminate.** If the
+  reports carry *positive assessments of the contribution* — recommendations to accept,
+  affirmations of fit, a statement that a reviewer would want the paper programmed — then this is
+  not a decision carrying no signal. It is a paper that cleared the panel's bar and lost a queue,
+  which is **5D, competitive triage**, and the tie-break in `reference/failure-modes.md` governs
+  the call. Reports that carry nothing either way give the null.
+
+  This screen is coarse and the taxonomy is fine. Treating the screen as terminal would make 5D
+  unreachable, since every case that meets 5D's conditions also meets this screen's — and a
+  taxonomy entry no case can ever reach is not a rule, it is dead text.
 - A convergent substantive objection, or a panel that split sharply, or reports that
   demonstrably misread the paper → a real, locatable failure. Continue.
 
