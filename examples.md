@@ -401,8 +401,15 @@ other and with the paper.
 **Competitive triage (5D).** Considered, and it is the closest live alternative to the null rather
 than a rival to it. 5D describes a paper that cleared the bar and lost a queue; the null describes
 a decision carrying no signal. The two reports affirming the contribution's fit are weak evidence
-for 5D. They are not enough to call it, because neither ranks the paper against the accepted
-programme and no such ranking was supplied. Named, not chosen.
+for 5D, and the taxonomy's tie-break is met: the reports carry positive assessments of the
+contribution and the letter cites competition. 5D is preferred, and the preference is stated.
+
+The absence of a ranking against the accepted programme does not block that preference. The
+taxonomy makes the reviewers' assessments the evidence, not the committee's ordering. What the
+missing ranking does is cap the grade: the finding rests on what the panel recommended rather
+than on where the committee placed the paper, and the null stays genuinely live rather than
+merely named, because a discussion phase would bias a panel toward exactly the uniformity the
+preference rests on.
 
 **Prior revision.** None. First submission, so there is no completed experiment to read.
 
