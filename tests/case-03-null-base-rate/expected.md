@@ -11,7 +11,12 @@ elsewhere.
 
 - [ ] **No constraint is located.** The report says so stage by stage: reconstruction healthy, no
       convergent objection, no scope dispute.
-- [ ] **The null is accepted as the diagnosis**, not reported as an inability to find a cause.
+- [ ] **Primary cause is 5D, competitive triage**, not the null. The taxonomy's tie-break governs:
+      the reports carry positive contribution assessments (three weak accepts, two affirmations of
+      fit) and the letter cites competition, so 5D is preferred and the preference must be stated.
+      The null must be named as the closest live alternative and kept genuinely live, since the
+      discussion phase means the uniformity of the positive assessment cannot be read at full
+      strength — and that is the one thing carrying the discriminator.
 - [ ] **The venue's published 85% rate is used as the input the null is tested against**, not as
       background colour. The report must connect 1,340 submissions against roughly 200 slots to
       the claim that rejection is the modal outcome here.
@@ -35,7 +40,7 @@ elsewhere.
       inferred from the reports seeming mild. The first clause fails — the panel is Usable with
       limitations rather than Usable. **Supported was reachable and is not reached, for a stated
       structural reason.**
-- [ ] **Competitive triage (5D) is named as the closest live alternative and not chosen**, with
+- [ ] **The null is named as the closest live alternative and not chosen**, with
       the reason: the two reports affirming fit are weak evidence for it, and no ranking against
       the accepted programme was supplied.
 - [ ] **The structural blind spot is named**: reviewer areas are undeclared, a panel from one
