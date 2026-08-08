@@ -1,8 +1,14 @@
 # Run record
 
-**4 blind runs, 3 cases.** Cases 01 and 02 **20/20** each. Case 03 has been run twice: once
-against the original key, which it proved wrong, and once again against the corrected key, which
-it also proved wrong — in a different place.
+**6 blind runs, 3 cases.** Every case has now been run twice: once against the key as originally
+written, and once again against the key after the first run corrected it. That second pass is the
+one that matters, and it is described at the bottom under *Closing the circularity*.
+
+| Case | First run | Re-run against the corrected key |
+|---|---|---|
+| 01 — divergent reads | 20/20 | **18/20** · 1 partial, 1 missed assertion |
+| 02 — convergent defect | 20/20 | **21/21** · clean |
+| 03 — null / base rate | key proven wrong, corrected | **17/20** · found the corrected key contradicting itself |
 
 ## How these were run
 
@@ -37,32 +43,49 @@ That correction matters more than the clean number it replaced. A run that can o
 fault with the demonstration layer is not reaching the layer that governs. These two show the
 runs reach it.
 
-## Case 03, run twice
+## Closing the circularity
 
-The second run agreed with the corrected key on **17 of 20** assertions outright, including every
-one the case was built to test: the 5D-over-null tie-break stated and applied, the venue's
-published rate used as the input the null is tested against rather than as background, the
-directional-bias analysis worked through in the direction that *strengthens* the finding, and
-**Provisional** held anyway because the panel-integrity cap binds on structure rather than on
-strength. Two assertions matched partially.
+Every corrected key in this folder has now been re-run blind. Three results, and they are three
+different kinds:
 
-The twentieth could not be scored, because the key contradicts itself. `Must assert` requires
-**"Primary cause is 5D, competitive triage"**; `Must not` requires **"Does not name any cause as
-primary."** Both cannot hold. The `Must not` line was inherited from a pure-null case template and
-survived the 5D correction, which updated the assertion and never swept the prohibition — the same
-fix-the-instance-don't-sweep-the-class failure the Step 1 routing defect was. Both lines are now
-corrected.
+**Case 02 came back 21/21.** Every assertion, including the three the case exists to catch: the
+recommendation split refused as polarization rather than promoted to Stage 5, the venue-problem
+framing the request asks for refused on the evidence, and the round-1 revision graded **Positive
+at Stage 3** with the two-findings reading — the revision worked at the one thing it could test,
+and clearing that break revealed the next one rather than resolving it. This is the strongest
+result in the folder, because the key it satisfied was one a previous run had already corrected.
 
-This is the value of re-running a repaired key. The first run corrected the key; the key then
-agreed with that run by construction. Only a second blind run could show that the repair had left
-a contradiction behind, and it did.
+**Case 03 proved the corrected key wrong a second time, in a new place.** The key required
+"Primary cause is 5D, competitive triage" under `Must assert` and "Does not name any cause as
+primary" under `Must not`. Both cannot hold. The prohibition had been inherited from a pure-null
+case template and survived the 5D correction, which updated the assertion and never swept the
+prohibition. Both lines are now fixed. Only a run that did not shape the key could have shown
+this, which is the whole argument for re-running.
+
+**Case 01 came back 18/20 on a key that had scored 20/20.** The run held every load-bearing
+assertion — constraint at Stage 3, the divergence pattern, framing mismatch demoted on the
+agreement discriminator rather than the misreading count, Stages 4 and 5 declared starved, and
+the folk cause refused explicitly ("*A reviewer did not read it.* Not supported"). What it
+dropped was the assertion requiring the author's count of eleven objections to be **addressed and
+refused as a basis**. The run never mentioned the count. It did not rank or triage the
+objections either, so the drift signal did not fire — it simply declined to engage the author's
+framing rather than refusing it out loud.
+
+That gap is a finding about the method, not only about the run. **The output contract has no
+heading where "your count of objections is not a measure of anything" belongs.** The assertion is
+satisfiable — the first run satisfied it — but whether it appears depends on the run rather than
+on the contract, and an assertion the method never cues is one the method cannot be relied on to
+produce.
+
+It has deliberately **not** been patched. Editing `rules.md` to satisfy a key hours after a run
+exposed the gap, without re-running, rebuilds exactly the circularity this record exists to track.
+It is written down instead.
 
 ## What is still open
 
-- **Cases 01 and 02 have not been re-run against their corrected keys.** They still agree with the
-  runs that corrected them by construction. Case 03 is now the only case in this folder whose key
-  has survived a run it did not shape.
+- **The case-01 contract gap above.** Named, not fixed, and not fixed on purpose.
 - **No retrospective field validation.** Every case here is a constructed teaching case. None is a
   real rejection with a known outcome, and nothing in this folder has been checked against one.
+  This is the largest thing missing and no amount of blind running substitutes for it.
 
 `tests/` is deliberately excluded from what you upload into a Claude Project. See the README.

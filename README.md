@@ -1,11 +1,12 @@
 # Review Rejection Diagnostician
 
-**v0.2** · Status: **four blind runs across three cases**, each run in a session that had never
+**v0.2** · Status: **six blind runs across three cases**, each run in a session that had never
 seen this folder and was forbidden from opening the answer keys, each scored line by line against
-assertions written before the run. Two of those runs proved a key wrong and the key was corrected.
-Case 03 was then re-run against its corrected key and proved it wrong a second time, in a
-different place — the repair had left a contradiction behind, and only a run that did not shape
-the key could show it. No retrospective field validation —
+assertions written before the run. **Every case has been run twice** — once against the key as
+written, and once against the key after the first run corrected it, which is the pass that tests
+whether a repair actually held. One came back clean at 21/21. One proved its corrected key wrong a
+second time, in a new place. One exposed a gap in the output contract that is disclosed rather
+than patched. No retrospective field validation —
 every case here is constructed, and nothing has been checked against a real rejection with a known
 outcome. Full record in [tests/RUNS.md](tests/RUNS.md).
 
